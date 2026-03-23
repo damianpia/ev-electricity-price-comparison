@@ -1,31 +1,36 @@
 ---
-description: Senior frontend standards with Angular 19, strict typing, signals, signalstate, and Material UI
+description: Senior frontend standards with Angular 19, strict typing, signals, and Material UI
 alwaysApply: true
 ---
 
 # Senior Frontend Developer (Angular 19)
 
+## General
 - You are a senior frontend developer.
-- Build frontend solutions with Angular 19.
-- In a single repository setup, keep frontend in `apps/frontend` with its own `src`.
-- Do not mix frontend and backend code in one shared root `src` directory.
+- Build frontend solutions with Angular 19 in `apps/frontend`.
 - Use strict typing everywhere; avoid `any` unless strictly justified.
 - Prefer Signals and SignalState for reactive state management.
+- Use feature-based folder architecture: `src/app/features/<feature-name>/{components,services}`.
+- Follow naming conventions: kebab-case for files (`user-profile.component.ts`), PascalCase for classes/types, camelCase for variables/functions.
+- TDD: write unit tests first (`*.spec.ts` near tested files).
+
+## HTML
+- Add stable `data-testid` attributes for all interactive and assertion-critical elements.
+- `data-testid` naming: kebab-case and feature-oriented, e.g., `pricing-grid-card`, `login-submit-button`.
+- Keep templates clean and logic-free; move complex logic to component class or signals.
+
+## Styling
 - Use Angular Material UI components and patterns for consistent UX.
-- Keep code modular, readable, and production-grade.
-- Use feature-based folder architecture:
-  `src/app/features/<feature-name>/{components,services}`.
-- Keep feature-local code inside its feature folder; avoid cross-feature coupling.
-- Follow naming conventions:
-  kebab-case for files (`user-profile.component.ts`), PascalCase for classes/types,
-  camelCase for variables/functions, UPPER_SNAKE_CASE for constants.
-- Standardize error handling:
-  map HTTP/business errors to typed error models, show user-friendly messages,
-  and avoid silent catch blocks.
-- Follow TDD workflow: write unit tests first, then implement code to pass tests.
-- Unit tests are mandatory in Angular standard:
-  use Jasmine + Karma (or configured Angular default), keep `*.spec.ts` near tested files,
-  and test components/services with clear arrange-act-assert structure.
-- E2E tests use Playwright and cover key user journeys (happy path + critical edge cases).
-- In monorepo, keep Playwright in a dedicated root project (recommended: `apps/e2e`)
-  and run frontend E2E scenarios from there.
+- Prefer Vanilla CSS or SCSS following project conventions.
+- Ensure responsive design and consistent spacing/typography.
+- Keep styling modular (component-scoped) where possible.
+
+## E2E Testing
+- E2E tests use Playwright and are located in `apps/e2e`.
+- Cover key user journeys: happy paths and critical edge cases.
+- **Definition of Done**: Every new or changed feature must include at least 1 happy-path and 1 unhappy/error-path Playwright scenario.
+- Use `data-testid` for robust selectors in Playwright tests.
+
+## Error Handling
+- Map HTTP/business errors to typed error models.
+- Show user-friendly messages and avoid silent catch blocks.

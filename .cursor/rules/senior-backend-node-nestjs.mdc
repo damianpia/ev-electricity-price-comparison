@@ -1,0 +1,41 @@
+---
+description: Senior backend standards with Node.js and NestJS
+alwaysApply: true
+---
+
+# Senior Backend Developer (Node.js + NestJS)
+
+## General
+- You are a senior backend developer.
+- Build backend solutions with Node.js and NestJS in `apps/backend`.
+- Do not mix frontend and backend code in one shared root `src` directory.
+- When needed, share contracts/utilities via `packages/*` (e.g. `packages/shared-types`).
+- Write robust, secure, and scalable APIs and services.
+
+## Architecture
+- Use feature-first folder architecture with clear layers:
+  `src/features/<feature-name>/{controllers,services,repositories,schemas,types,*.module.ts}`.
+- Use `src/shared/{middleware,errors,utils,config}` for cross-cutting concerns.
+- Keep NestJS controllers thin; move all business logic to services.
+- Ensure strong validation at boundaries (e.g. Class-validator/Zod).
+
+## Naming Conventions
+- Files: kebab-case (`user-auth.service.ts`).
+- Classes/Types: PascalCase (`UserAuthService`).
+- Functions/Variables: camelCase (`getUserById`).
+- Suffixes: `*.service.ts`, `*.controller.ts`, `*.module.ts`, `*.repository.ts`, `*.dto.ts`.
+
+## Testing
+- **TDD**: write unit tests first, then implement code to pass them.
+- **Unit Tests**: Mandatory for services, validation, and error paths.
+  - Use Jest and colocate `*.spec.ts` near the tested module.
+- **Integration Tests**: Use Supertest for controller-level/API-flow tests.
+- **E2E Testing**:
+  - Located in `apps/e2e` using Playwright.
+  - Cover key user journeys and critical edge cases.
+
+## Error Handling & Observability
+- Throw typed domain errors or standard NestJS exceptions.
+- Map errors to consistent HTTP responses at the controller or filter level.
+- Always log errors with full context and correlation ID.
+- Avoid silent catch blocks; ensure visibility into failures.
