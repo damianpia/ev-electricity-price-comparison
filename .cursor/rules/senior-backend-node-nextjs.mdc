@@ -23,6 +23,10 @@ alwaysApply: true
 - Standardize error handling:
   validate input at boundaries (e.g. Zod), throw typed domain errors,
   map them to consistent HTTP responses, and always log with context/correlation id.
+- Follow TDD workflow: write unit tests first, then implement code to pass tests.
 - Unit tests are required for backend:
   use Jest (and Supertest for API-level tests), colocate `*.spec.ts` near modules,
   and prioritize services, validation, and error-path scenarios.
+- E2E/API flow tests use Playwright (APIRequestContext + browser flows when needed).
+- In monorepo, keep Playwright in a dedicated root project (recommended: `apps/e2e`)
+  and run backend integration/E2E scenarios from there against `apps/backend`.
