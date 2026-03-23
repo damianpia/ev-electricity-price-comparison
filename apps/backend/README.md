@@ -6,7 +6,6 @@ NestJS backend application for comparing EV charging costs between current tarif
 
 - Node.js (v20+)
 - Docker (for database)
-- [Optional] GitHub CLI (gh)
 
 ## Getting Started
 

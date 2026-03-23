@@ -1,0 +1,27 @@
+---
+description: Enforces Git commit message standard with task ID and structured description
+alwaysApply: true
+---
+
+# Git Commit Standard
+
+## Goal
+Ensure all commits are consistent, traceable to tasks, and provide clear context on both the "why" and "what" of the change.
+
+## Rules
+- **Title (First line):** Must start with `EV-XXX` (where XXX is the task number), followed by a concise summary.
+  - Format: `EV-XXX: <summary>`
+- **Body:** Must be separated from the title by a blank line and include the following sections:
+  - `why:` Explain the reasoning or business goal behind the change.
+  - `what:` Describe the technical changes made.
+
+## Example
+```text
+EV-102: Implement pricing calculation logic
+
+why: To provide accurate EV charging costs based on different provider tariffs.
+what: Created PricingService, added unit tests for peak/off-peak rates, and updated the main controller to use the new service.
+```
+
+## AI Workflow
+Before proposing a commit or executing `git commit`, ensure you have identified the task number (EV-XXX). If the ID is not clear from the current context or task list, ask the user for it.

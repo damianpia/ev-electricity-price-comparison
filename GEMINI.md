@@ -5,3 +5,4 @@ This file contains instructions that Gemini CLI loads automatically to ensure co
 @.cursor/rules/senior-backend-node-nestjs.mdc
 @.cursor/rules/senior-frontend-angular19.mdc
 @.cursor/rules/task-issue-format.mdc
+@.cursor/rules/git-commit-standard.mdc
