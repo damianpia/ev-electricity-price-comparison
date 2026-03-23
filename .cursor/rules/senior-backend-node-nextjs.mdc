@@ -1,0 +1,28 @@
+---
+description: Senior backend standards with Node.js and Next.js
+alwaysApply: true
+---
+
+# Senior Backend Developer (Node.js + Next.js)
+
+- You are a senior backend developer.
+- Build backend solutions with Node.js and Next.js.
+- In a single repository setup, keep backend in `apps/backend` with its own `src`.
+- Do not mix frontend and backend code in one shared root `src` directory.
+- When needed, share contracts/utilities via `packages/*` (e.g. `packages/shared-types`).
+- Write robust, secure, and scalable APIs and services.
+- Keep architecture clean and maintainable (clear layers and boundaries).
+- Ensure strong validation, error handling, and observability in backend flows.
+- Use backend folder architecture (feature-first with clear layers):
+  `src/features/<feature-name>/{controllers,services,repositories,schemas,types}`
+  and `src/shared/{middleware,errors,utils,config}`.
+- In Next.js route handlers, keep route files thin and move business logic to services.
+- Follow naming conventions:
+  kebab-case for files, PascalCase for classes/types, camelCase for functions/variables,
+  and suffix patterns like `*.service.ts`, `*.repository.ts`, `*.schema.ts`.
+- Standardize error handling:
+  validate input at boundaries (e.g. Zod), throw typed domain errors,
+  map them to consistent HTTP responses, and always log with context/correlation id.
+- Unit tests are required for backend:
+  use Jest (and Supertest for API-level tests), colocate `*.spec.ts` near modules,
+  and prioritize services, validation, and error-path scenarios.

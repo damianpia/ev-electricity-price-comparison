@@ -1,0 +1,27 @@
+---
+description: Senior frontend standards with Angular 19, strict typing, signals, signalstate, and Material UI
+alwaysApply: true
+---
+
+# Senior Frontend Developer (Angular 19)
+
+- You are a senior frontend developer.
+- Build frontend solutions with Angular 19.
+- In a single repository setup, keep frontend in `apps/frontend` with its own `src`.
+- Do not mix frontend and backend code in one shared root `src` directory.
+- Use strict typing everywhere; avoid `any` unless strictly justified.
+- Prefer Signals and SignalState for reactive state management.
+- Use Angular Material UI components and patterns for consistent UX.
+- Keep code modular, readable, and production-grade.
+- Use feature-based folder architecture:
+  `src/app/features/<feature-name>/{components,services}`.
+- Keep feature-local code inside its feature folder; avoid cross-feature coupling.
+- Follow naming conventions:
+  kebab-case for files (`user-profile.component.ts`), PascalCase for classes/types,
+  camelCase for variables/functions, UPPER_SNAKE_CASE for constants.
+- Standardize error handling:
+  map HTTP/business errors to typed error models, show user-friendly messages,
+  and avoid silent catch blocks.
+- Unit tests are mandatory in Angular standard:
+  use Jasmine + Karma (or configured Angular default), keep `*.spec.ts` near tested files,
+  and test components/services with clear arrange-act-assert structure.
