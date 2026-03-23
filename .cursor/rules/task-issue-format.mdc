@@ -1,0 +1,38 @@
+---
+description: Standard format for tasks and GitHub issues
+alwaysApply: true
+---
+
+# Task And Issue Format
+
+When creating or updating tasks (especially GitHub Issues), always use the same section order and naming:
+
+1. `Goal`
+2. `Tasks`
+3. `Done criteria`
+
+## Required Template
+
+Use this exact structure:
+
+```md
+## Goal
+<one clear objective sentence>
+
+## Tasks
+- [ ] <task 1>
+- [ ] <task 2>
+- [ ] <task 3>
+
+## Done criteria
+- [ ] <measurable completion condition 1>
+- [ ] <measurable completion condition 2>
+```
+
+## Rules
+
+- Use concise, implementation-oriented wording.
+- Keep tasks actionable and testable.
+- Keep done criteria measurable (no vague "looks good").
+- For research tasks, still keep the same three-section format.
+- Do not use alternative section names like "Story", "Acceptance criteria", or mixed variants.
