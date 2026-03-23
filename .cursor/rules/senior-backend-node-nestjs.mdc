@@ -37,5 +37,7 @@ alwaysApply: true
 ## Error Handling & Observability
 - Throw typed domain errors or standard NestJS exceptions.
 - Map errors to consistent HTTP responses at the controller or filter level.
+- **HTTP Standards**: Always use appropriate status codes: 400 (Bad Request) for validation/client errors, 404 (Not Found) for missing resources.
+- **Avoid 500**: Ensure business logic errors are properly caught and transformed into 4xx codes; avoid exposing unhandled 500 Internal Server Errors.
 - Always log errors with full context and correlation ID.
 - Avoid silent catch blocks; ensure visibility into failures.

@@ -5,6 +5,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { HealthModule } from './health/health.module';
 import { PricingModule } from './features/pricing/pricing.module';
+import { QueryHistoryModule } from './features/query-history/query-history.module';
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import { PricingModule } from './features/pricing/pricing.module';
     }),
     HealthModule,
     PricingModule,
+    QueryHistoryModule,
   ],
   controllers: [AppController],
   providers: [AppService],

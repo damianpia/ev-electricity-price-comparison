@@ -1,4 +1,5 @@
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, ManyToOne } from 'typeorm';
+import { Provider } from './provider.entity';
 
 @Entity('tariffs')
 export class Tariff {
@@ -13,6 +14,9 @@ export class Tariff {
 
   @Column('timestamp')
   effectiveDate: Date; // Date from which the tariff is effective
+
+  @ManyToOne(() => Provider, (provider) => provider.tariffs)
+  provider: Provider;
 
   @CreateDateColumn()
   createdAt: Date;
