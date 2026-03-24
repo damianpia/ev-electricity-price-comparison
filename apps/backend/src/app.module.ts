@@ -1,12 +1,15 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { ScheduleModule } from '@nestjs/schedule';
 import { join } from 'path';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { HealthModule } from './health/health.module';
 import { PricingModule } from './features/pricing/pricing.module';
 import { QueryHistoryModule } from './features/query-history/query-history.module';
+import { TeslaMateModule } from './features/teslamate/teslamate.module';
+import { ChargingModule } from './features/charging/charging.module';
 
 @Module({
   imports: [
@@ -14,6 +17,7 @@ import { QueryHistoryModule } from './features/query-history/query-history.modul
       isGlobal: true,
       envFilePath: ['.env', 'apps/backend/.env'],
     }),
+    ScheduleModule.forRoot(),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       useFactory: (configService: ConfigService) => ({
@@ -33,6 +37,8 @@ import { QueryHistoryModule } from './features/query-history/query-history.modul
     HealthModule,
     PricingModule,
     QueryHistoryModule,
+    TeslaMateModule,
+    ChargingModule,
   ],
   controllers: [AppController],
   providers: [AppService],

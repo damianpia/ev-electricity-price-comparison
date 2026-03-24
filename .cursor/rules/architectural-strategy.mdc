@@ -1,0 +1,21 @@
+---
+description: Architectural strategy for hourly updates and frontend-backend communication
+alwaysApply: true
+---
+
+# Architectural Strategy (Hourly Updates & Communication)
+
+## Backend Scheduling
+- **Strategy:** Use simple Cron-based scheduling for hourly data updates.
+- **Implementation:** Utilize NestJS `@nestjs/schedule` and the `@Cron` decorator.
+- **Rationale:** Sufficient for homelab/miniPC (k3s) setup with minimal overhead. Easily portable to cloud (GCP Cloud Scheduler / AWS EventBridge) if requirements evolve.
+- **Failure Handling:** For initial implementation, a failed update can simply wait until the next hourly interval.
+
+## Frontend-Backend Communication
+- **Strategy:** REST with Polling.
+- **Implementation:** Frontend (Angular) should poll the backend at regular intervals (e.g., every 15-30 minutes) or upon user navigation to refresh hourly price data.
+- **Rationale:** WebSocket is overkill for data that changes only once per hour. REST polling is simpler to implement, easier to cache, and more reliable for basic needs.
+
+## Environment Compatibility
+- **Primary:** Optimized for miniPC/k3s (homelab).
+- **Future-proofing:** Logic should be modular enough to replace internal Cron with external triggers (e.g., via a dedicated endpoint) if moving to serverless or cloud-native scheduling later.
