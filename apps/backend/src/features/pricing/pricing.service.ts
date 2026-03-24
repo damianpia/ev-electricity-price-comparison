@@ -36,4 +36,3 @@ export class PricingService {
     return this.tariffRepository.save(tariff);
   }
 }
-}

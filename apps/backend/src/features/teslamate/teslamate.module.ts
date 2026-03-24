@@ -21,6 +21,11 @@ import { ChargingModule } from '../charging/charging.module';
         entities: [TeslaMateChargingProcess, TeslaMateGeofence],
         synchronize: false,
         logging: false,
+        extra: {
+          ssl: configService.get<string>('TESLAMATE_DB_SSL') === 'true' ? {
+            rejectUnauthorized: false
+          } : false
+        }
       }),
       inject: [ConfigService],
     }),
