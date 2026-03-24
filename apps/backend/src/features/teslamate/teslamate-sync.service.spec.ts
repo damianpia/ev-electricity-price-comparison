@@ -1,8 +1,10 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
+import { ConfigService } from '@nestjs/config';
 import { Repository } from 'typeorm';
 import { TeslaMateSyncService } from './teslamate-sync.service';
 import { TeslaMateService } from './teslamate.service';
+import { CostCalculationService } from '../pricing/cost-calculation.service';
 import { ChargingSession } from '../charging/entities/charging-session.entity';
 import { TeslaMateChargingProcess } from './entities/teslamate.entities';
 
@@ -22,6 +24,14 @@ describe('TeslaMateSyncService', () => {
     getStrictHomeChargingSessions: jest.fn(),
   };
 
+  const mockCostCalculationService = {
+    calculateSessionCosts: jest.fn().mockResolvedValue({ costFixed: 10, costDynamic: 8 }),
+  };
+
+  const mockConfigService = {
+    get: jest.fn((key: string, defaultValue: string) => defaultValue),
+  };
+
   beforeEach(async () => {
     jest.clearAllMocks();
     const module: TestingModule = await Test.createTestingModule({
@@ -30,6 +40,14 @@ describe('TeslaMateSyncService', () => {
         {
           provide: TeslaMateService,
           useValue: mockTeslaMateService,
+        },
+        {
+          provide: CostCalculationService,
+          useValue: mockCostCalculationService,
+        },
+        {
+          provide: ConfigService,
+          useValue: mockConfigService,
         },
         {
           provide: getRepositoryToken(ChargingSession),

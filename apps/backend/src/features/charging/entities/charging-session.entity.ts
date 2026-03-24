@@ -24,7 +24,10 @@ export class ChargingSession {
   locationName: string;
 
   @Column('decimal', { precision: 10, scale: 4, nullable: true })
-  totalCost: number;
+  costFixed: number;
+
+  @Column('decimal', { precision: 10, scale: 4, nullable: true })
+  costDynamic: number;
 
   @CreateDateColumn()
   createdAt: Date;

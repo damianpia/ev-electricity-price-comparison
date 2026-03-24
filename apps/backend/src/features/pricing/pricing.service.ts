@@ -1,8 +1,9 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Repository, Between } from 'typeorm';
 import { Tariff } from './entities/tariff.entity';
 import { Provider } from './entities/provider.entity';
+import { ChargingSession } from '../charging/entities/charging-session.entity';
 import { CreateProviderDto } from './dto/create-provider.dto';
 
 @Injectable()
@@ -12,7 +13,42 @@ export class PricingService {
     private tariffRepository: Repository<Tariff>,
     @InjectRepository(Provider)
     private providerRepository: Repository<Provider>,
+    @InjectRepository(ChargingSession)
+    private readonly chargingSessionRepo: Repository<ChargingSession>,
   ) {}
+
+  async getCostSummary(period: '24h' | '7d' | '30d') {
+    const now = new Date();
+    let startDate = new Date();
+
+    if (period === '24h') startDate.setHours(now.getHours() - 24);
+    else if (period === '7d') startDate.setDate(now.getDate() - 7);
+    else if (period === '30d') startDate.setDate(now.getDate() - 30);
+
+    const sessions = await this.chargingSessionRepo.find({
+      where: {
+        startTime: Between(startDate, now),
+        isHome: true,
+      },
+    });
+
+    const summary = sessions.reduce(
+      (acc, s) => {
+        acc.totalKwh += Number(s.kwhAdded);
+        acc.totalCostFixed += Number(s.costFixed || 0);
+        acc.totalCostDynamic += Number(s.costDynamic || 0);
+        return acc;
+      },
+      { totalKwh: 0, totalCostFixed: 0, totalCostDynamic: 0 },
+    );
+
+    return {
+      period,
+      ...summary,
+      totalSavings: summary.totalCostFixed - summary.totalCostDynamic,
+      sessionCount: sessions.length,
+    };
+  }
 
   async findAllTariffs(): Promise<Tariff[]> {
     return this.tariffRepository.find({ relations: ['provider'] });

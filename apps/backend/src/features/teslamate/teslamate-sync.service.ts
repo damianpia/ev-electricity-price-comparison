@@ -1,9 +1,11 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Cron, CronExpression } from '@nestjs/schedule';
+import { ConfigService } from '@nestjs/config';
 import { Repository } from 'typeorm';
 import { ChargingSession } from '../charging/entities/charging-session.entity';
 import { TeslaMateService } from './teslamate.service';
+import { CostCalculationService, PricingConfig } from '../pricing/cost-calculation.service';
 
 @Injectable()
 export class TeslaMateSyncService {
@@ -11,6 +13,8 @@ export class TeslaMateSyncService {
 
   constructor(
     private readonly teslaMateService: TeslaMateService,
+    private readonly costCalculationService: CostCalculationService,
+    private readonly configService: ConfigService,
     @InjectRepository(ChargingSession)
     private readonly chargingSessionRepo: Repository<ChargingSession>,
   ) {}
@@ -19,6 +23,13 @@ export class TeslaMateSyncService {
   async syncHomeChargingSessions(): Promise<number> {
     this.logger.log('Starting TeslaMate home charging sync...');
     
+    // Config for calculation - in real app this would come from UserSettings entity
+    const pricingConfig: PricingConfig = {
+      fixedEnergyPrice: parseFloat(this.configService.get<string>('DEFAULT_FIXED_ENERGY_PRICE', '0.50')),
+      variableTransmissionFee: parseFloat(this.configService.get<string>('DEFAULT_TRANSMISSION_FEE', '0.43')),
+      providerMargin: parseFloat(this.configService.get<string>('DEFAULT_PROVIDER_MARGIN', '0.05')),
+    };
+
     // 1. Get the latest sync date from our DB
     const lastSession = await this.chargingSessionRepo.findOne({
       where: {},
@@ -33,7 +44,7 @@ export class TeslaMateSyncService {
     
     let syncedCount = 0;
     
-    // 3. Map and save new sessions
+    // 3. Map, Calculate and save new sessions
     for (const tmSession of tmSessions) {
       // Check if session with this externalId already exists
       const existing = await this.chargingSessionRepo.findOneBy({ 
@@ -49,7 +60,7 @@ export class TeslaMateSyncService {
         continue;
       }
 
-      const newSession = this.chargingSessionRepo.create({
+      const newSessionStub = this.chargingSessionRepo.create({
         externalId: tmSession.id,
         startTime: tmSession.start_date,
         endTime: tmSession.end_date,
@@ -58,7 +69,16 @@ export class TeslaMateSyncService {
         locationName: tmSession.geofence?.name || 'Home',
       });
 
-      await this.chargingSessionRepo.save(newSession);
+      // Calculate costs
+      const { costFixed, costDynamic } = await this.costCalculationService.calculateSessionCosts(
+        newSessionStub, 
+        pricingConfig
+      );
+
+      newSessionStub.costFixed = costFixed;
+      newSessionStub.costDynamic = costDynamic;
+
+      await this.chargingSessionRepo.save(newSessionStub);
       syncedCount++;
     }
 

@@ -3,14 +3,16 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Tariff } from './entities/tariff.entity';
 import { Provider } from './entities/provider.entity';
 import { HourlyPrice } from './entities/hourly-price.entity';
+import { ChargingSession } from '../charging/entities/charging-session.entity';
 import { PricingService } from './pricing.service';
 import { ExternalPriceService } from './external-price.service';
+import { CostCalculationService } from './cost-calculation.service';
 import { PricingController } from './pricing.controller';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Tariff, Provider, HourlyPrice])],
-  providers: [PricingService, ExternalPriceService],
+  imports: [TypeOrmModule.forFeature([Tariff, Provider, HourlyPrice, ChargingSession])],
+  providers: [PricingService, ExternalPriceService, CostCalculationService],
   controllers: [PricingController],
-  exports: [TypeOrmModule, PricingService, ExternalPriceService],
+  exports: [TypeOrmModule, PricingService, ExternalPriceService, CostCalculationService],
 })
 export class PricingModule {}

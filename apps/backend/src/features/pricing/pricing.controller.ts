@@ -18,6 +18,13 @@ export class PricingController {
     return { message: `Price sync triggered ${date ? `for date following ${date}` : 'for tomorrow'}` };
   }
 
+  @Get('summary')
+  async getSummary(@Param('period') period: '24h' | '7d' | '30d' = '7d') {
+    // Note: use @Query instead of @Param for optional filters usually, 
+    // but let's stick to simple structure for now or use query.
+    return this.pricingService.getCostSummary(period);
+  }
+
   @Get('providers')
   findAllProviders() {
     return this.pricingService.findAllProviders();
