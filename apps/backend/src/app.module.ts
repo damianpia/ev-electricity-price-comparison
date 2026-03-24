@@ -15,7 +15,7 @@ import { ChargingModule } from './features/charging/charging.module';
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      envFilePath: ['.env', 'apps/backend/.env'],
+      envFilePath: ['.env', '../../.env'],
     }),
     ScheduleModule.forRoot(),
     TypeOrmModule.forRootAsync({

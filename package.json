@@ -1,0 +1,15 @@
+{
+  "name": "ev-electricity-price-comparison",
+  "private": true,
+  "scripts": {
+    "dev:backend": "npm --prefix apps/backend run start:dev",
+    "dev:frontend": "npm --prefix apps/frontend run start",
+    "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\"",
+    "test:frontend": "npm --prefix apps/frontend test -- --watch=false",
+    "test:backend": "npm --prefix apps/backend test"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2",
+    "dotenv-cli": "^8.0.0"
+  }
+}

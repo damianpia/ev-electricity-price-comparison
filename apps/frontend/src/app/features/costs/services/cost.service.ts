@@ -22,11 +22,11 @@ export class CostService {
     this.isLoading.set(true);
     this.error.set(null);
 
-    const periods: ('24h' | '7d' | '30d')[] = ['24h', '7d', '30d'];
+    const periods: ('90d' | '30d' | '7d')[] = ['90d', '30d', '7d'];
     const labels = {
-      '24h': 'Last 24h',
-      '7d': 'Last 7 days',
-      '30d': 'Last 30 days'
+      '90d': 'Last 90 days',
+      '30d': 'Last 30 days',
+      '7d': 'Last 7 days'
     };
 
     const requests = periods.map(period => 

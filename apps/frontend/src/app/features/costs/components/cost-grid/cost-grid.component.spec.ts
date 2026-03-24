@@ -13,8 +13,8 @@ describe('CostGridComponent', () => {
     mockCostService = {
       costPeriods: signal([
         {
-          label: 'Test 24h',
-          periodType: '24h',
+          label: 'Test 90d',
+          periodType: '90d',
           totalCostFixed: 12,
           totalCostDynamic: 10,
           energyConsumedKwh: 10,
@@ -47,7 +47,7 @@ describe('CostGridComponent', () => {
     const compiled = fixture.nativeElement as HTMLElement;
     const cards = compiled.querySelectorAll('mat-card');
     expect(cards.length).toBe(1);
-    expect(cards[0].textContent).toContain('Test 24h');
+    expect(cards[0].textContent).toContain('Test 90d');
     // totalCostDynamic is 10
     expect(cards[0].textContent).toContain('10.00');
   });

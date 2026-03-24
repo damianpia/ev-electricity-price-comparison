@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Param } from '@nestjs/common';
+import { Controller, Get, Post, Body, Query, Param } from '@nestjs/common';
 import { PricingService } from './pricing.service';
 import { ExternalPriceService } from './external-price.service';
 import { CreateProviderDto } from './dto/create-provider.dto';
@@ -19,9 +19,7 @@ export class PricingController {
   }
 
   @Get('summary')
-  async getSummary(@Param('period') period: '24h' | '7d' | '30d' = '7d') {
-    // Note: use @Query instead of @Param for optional filters usually, 
-    // but let's stick to simple structure for now or use query.
+  async getSummary(@Query('period') period: '7d' | '30d' | '90d' = '30d') {
     return this.pricingService.getCostSummary(period);
   }
 

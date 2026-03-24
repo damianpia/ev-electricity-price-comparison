@@ -17,13 +17,13 @@ export class PricingService {
     private readonly chargingSessionRepo: Repository<ChargingSession>,
   ) {}
 
-  async getCostSummary(period: '24h' | '7d' | '30d') {
+  async getCostSummary(period: '7d' | '30d' | '90d') {
     const now = new Date();
     let startDate = new Date();
 
-    if (period === '24h') startDate.setHours(now.getHours() - 24);
-    else if (period === '7d') startDate.setDate(now.getDate() - 7);
+    if (period === '7d') startDate.setDate(now.getDate() - 7);
     else if (period === '30d') startDate.setDate(now.getDate() - 30);
+    else if (period === '90d') startDate.setDate(now.getDate() - 90);
 
     const sessions = await this.chargingSessionRepo.find({
       where: {

@@ -28,7 +28,7 @@ describe('CostService', () => {
   it('should be created', () => {
     service = TestBed.inject(CostService);
     // Flush initial constructor requests
-    ['24h', '7d', '30d'].forEach(period => 
+    ['90d', '30d', '7d'].forEach(period => 
       httpMock.expectOne(`/api/pricing/summary?period=${period}`).flush({})
     );
     expect(service).toBeTruthy();
@@ -44,7 +44,7 @@ describe('CostService', () => {
     };
 
     // Trigger initial fetch from constructor
-    const reqs = ['24h', '7d', '30d'].map(period => 
+    const reqs = ['90d', '30d', '7d'].map(period => 
       httpMock.expectOne(`/api/pricing/summary?period=${period}`)
     );
 
@@ -59,7 +59,7 @@ describe('CostService', () => {
 
   it('should handle error during fetch', () => {
     service = TestBed.inject(CostService);
-    const reqs = ['24h', '7d', '30d'].map(period => 
+    const reqs = ['90d', '30d', '7d'].map(period => 
       httpMock.expectOne(`/api/pricing/summary?period=${period}`)
     );
 
