@@ -1,0 +1,33 @@
+<div class="cost-grid" data-testid="cost-grid">
+  @for (period of costPeriods(); track period.periodType) {
+    <mat-card class="cost-card" [attr.data-testid]="'cost-card-' + period.periodType">
+      <mat-card-header>
+        <mat-card-title>{{ period.label }}</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="cost-value">
+          <span class="amount">{{ period.totalCost | number:'1.2-2' }}</span>
+          <span class="currency">PLN</span>
+        </div>
+        
+        <div class="stats">
+          <div class="stat-item">
+            <span class="stat-label">Zużycie:</span>
+            <span class="stat-value">{{ period.energyConsumedKwh | number:'1.1-1' }} kWh</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-label">Śr. cena:</span>
+            <span class="stat-value">{{ period.averagePricePerKwh | number:'1.2-2' }} zł/kWh</span>
+          </div>
+        </div>
+
+        @if (period.trendPercentage !== undefined) {
+          <div class="trend" [class.positive]="period.trendPercentage > 0" [class.negative]="period.trendPercentage < 0">
+            <mat-icon>{{ period.trendPercentage > 0 ? 'trending_up' : 'trending_down' }}</mat-icon>
+            <span>{{ period.trendPercentage | number:'1.1-1' }}%</span>
+          </div>
+        }
+      </mat-card-content>
+    </mat-card>
+  }
+</div>

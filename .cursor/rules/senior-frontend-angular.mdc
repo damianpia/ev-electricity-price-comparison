@@ -1,16 +1,19 @@
 ---
-description: Senior frontend standards with Angular 19, strict typing, signals, and Material UI
+description: Senior frontend standards with Angular 21, strict typing, signals, and Material UI
 alwaysApply: true
 ---
 
-# Senior Frontend Developer (Angular 19)
+# Senior Frontend Developer (Angular 21)
 
 ## General
 - You are a senior frontend developer.
-- Build frontend solutions with Angular 19 in `apps/frontend`.
+- Build frontend solutions with Angular 21 in `apps/frontend`.
 - Use strict typing everywhere; avoid `any` unless strictly justified.
 - Prefer Signals and SignalState for reactive state management.
 - Use feature-based folder architecture: `src/app/features/<feature-name>/{components,services}`.
+- **File Structure**: Always separate templates and styles from the component class.
+  - Always use `templateUrl: './<name>.component.html'` and `styleUrl: './<name>.component.scss'`.
+  - NEVER use inline `template: \`...\`` or `styles: [...]` in the `@Component` decorator.
 - Follow naming conventions: kebab-case for files (`user-profile.component.ts`), PascalCase for classes/types, camelCase for variables/functions.
 - TDD: write unit tests first (`*.spec.ts` near tested files).
 
