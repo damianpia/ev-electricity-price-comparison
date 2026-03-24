@@ -18,6 +18,8 @@ alwaysApply: true
 - TDD: write unit tests first (`*.spec.ts` near tested files).
 
 ## HTML
+- Use the **new Angular Control Flow syntax** (`@if`, `@for`, `@switch`) exclusively.
+- NEVER use legacy structural directives like `*ngIf`, `*ngFor`, or `*ngSwitch`.
 - Add stable `data-testid` attributes for all interactive and assertion-critical elements.
 - `data-testid` naming: kebab-case and feature-oriented, e.g., `pricing-grid-card`, `login-submit-button`.
 - Keep templates clean and logic-free; move complex logic to component class or signals.
