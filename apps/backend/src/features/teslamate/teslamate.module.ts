@@ -5,6 +5,7 @@ import { TeslaMateChargingProcess, TeslaMateGeofence } from './entities/teslamat
 import { TeslaMateService } from './teslamate.service';
 import { TeslaMateSyncService } from './teslamate-sync.service';
 import { ChargingModule } from '../charging/charging.module';
+import { PricingModule } from '../pricing/pricing.module';
 
 @Module({
   imports: [
@@ -31,6 +32,7 @@ import { ChargingModule } from '../charging/charging.module';
     }),
     TypeOrmModule.forFeature([TeslaMateChargingProcess, TeslaMateGeofence], 'teslamate'),
     ChargingModule,
+    PricingModule,
     ConfigModule,
   ],
   providers: [TeslaMateService, TeslaMateSyncService],

@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { ConfigModule } from '@nestjs/config';
 import { Tariff } from './entities/tariff.entity';
 import { Provider } from './entities/provider.entity';
 import { HourlyPrice } from './entities/hourly-price.entity';
@@ -10,7 +11,10 @@ import { CostCalculationService } from './cost-calculation.service';
 import { PricingController } from './pricing.controller';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Tariff, Provider, HourlyPrice, ChargingSession])],
+  imports: [
+    TypeOrmModule.forFeature([Tariff, Provider, HourlyPrice, ChargingSession]),
+    ConfigModule,
+  ],
   providers: [PricingService, ExternalPriceService, CostCalculationService],
   controllers: [PricingController],
   exports: [TypeOrmModule, PricingService, ExternalPriceService, CostCalculationService],

@@ -4,16 +4,23 @@ import { Repository } from 'typeorm';
 import { Cron, CronExpression } from '@nestjs/schedule';
 import axios from 'axios';
 import { HourlyPrice } from './entities/hourly-price.entity';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class ExternalPriceService {
   private readonly logger = new Logger(ExternalPriceService.name);
-  private readonly instrantApiUrl = 'https://energy-instrat-api.azurewebsites.net/api/prices/energy_price_rdn_hourly';
+  private readonly pseApiUrl: string;
 
   constructor(
     @InjectRepository(HourlyPrice)
     private readonly hourlyPriceRepo: Repository<HourlyPrice>,
-  ) {}
+    private readonly configService: ConfigService,
+  ) {
+    this.pseApiUrl = this.configService.get<string>(
+      'PSE_API_URL', 
+      'https://api.raporty.pse.pl/api/rce-pln'
+    );
+  }
 
   @Cron(CronExpression.EVERY_DAY_AT_3PM)
   async syncHourlyPrices(targetDate?: Date) {
@@ -22,28 +29,45 @@ export class ExternalPriceService {
     tomorrow.setDate(today.getDate() + 1);
 
     const dateStr = tomorrow.toISOString().split('T')[0];
-    this.logger.log(`Syncing hourly prices for ${dateStr}...`);
+    return this.syncPriceForDate(dateStr);
+  }
+
+  async syncPriceForDate(dateStr: string) {
+    // Check if we already have ALL 24 hours for this date
+    const count = await this.hourlyPriceRepo.countBy({ date: dateStr });
+    if (count >= 24) {
+      return;
+    }
+
+    this.logger.log(`Syncing hourly prices from PSE for ${dateStr}...`);
 
     try {
-      const response = await axios.get(this.instrantApiUrl, {
+      const response = await axios.get(this.pseApiUrl, {
         params: {
-          date_from: `${dateStr}T00:00:00Z`,
-          date_to: `${dateStr}T23:59:59Z`,
+          '$filter': `business_date eq '${dateStr}'`,
         },
       });
 
-      const data = response.data;
-      if (!Array.isArray(data)) {
-        this.logger.warn('Received invalid data format from Instrat API');
+      const items = (response.data as any)?.value;
+      if (!Array.isArray(items) || items.length === 0) {
+        this.logger.warn(`No price data returned from PSE API for ${dateStr}`);
         return;
       }
 
-      for (const item of data) {
-        // item example: { "local_date": "2024-10-10T00:00:00", "price": 450.5 }
-        const localDate = new Date(item.local_date);
-        const hour = localDate.getHours();
-        const priceMwh = parseFloat(item.price);
-        const priceKwh = priceMwh / 1000;
+      // Group 15-min periods into hours
+      const hourlyData: Record<number, number[]> = {};
+      for (const item of items) {
+        const hour = parseInt(item.period.split(':')[0], 10);
+        if (!hourlyData[hour]) hourlyData[hour] = [];
+        hourlyData[hour].push(parseFloat(item.rce_pln));
+      }
+
+      for (const hourStr of Object.keys(hourlyData)) {
+        const hour = parseInt(hourStr, 10);
+        const prices = hourlyData[hour];
+        // Average price for the hour
+        const avgPriceMwh = prices.reduce((a, b) => a + b, 0) / prices.length;
+        const priceKwh = avgPriceMwh / 1000;
 
         const existing = await this.hourlyPriceRepo.findOneBy({ 
           date: dateStr, 
@@ -54,16 +78,16 @@ export class ExternalPriceService {
           const newPrice = this.hourlyPriceRepo.create({
             date: dateStr,
             hour,
-            pricePerMwh: priceMwh,
+            pricePerMwh: avgPriceMwh,
             pricePerKwh: priceKwh,
           });
           await this.hourlyPriceRepo.save(newPrice);
         }
       }
 
-      this.logger.log(`Successfully synced ${data.length} hourly prices for ${dateStr}.`);
+      this.logger.log(`Successfully synced ${Object.keys(hourlyData).length} hours from PSE for ${dateStr}.`);
     } catch (error) {
-      this.logger.error(`Failed to sync hourly prices: ${error.message}`);
+      this.logger.error(`Failed to sync hourly prices from PSE for ${dateStr}: ${error.message}`);
     }
   }
 
