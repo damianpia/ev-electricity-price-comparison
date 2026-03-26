@@ -15,6 +15,7 @@ Ensure all commits are consistent, traceable to tasks, and provide clear context
   - `why:` Explain the reasoning or business goal behind the change.
   - `what:` Describe the technical changes made.
 - **Documentation Update:** With every commit, check `README.md` to see if the changes can be documented in the roadmap/features section and remove completed items from the TODO list.
+- **Pre-Commit Verification:** Before executing or proposing a commit, you MUST ask the user to verify if the changes work as expected (manual verification). You cannot proceed with `git commit` until the user confirms the functionality is correct.
 
 ## Example
 ```text

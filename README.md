@@ -46,14 +46,15 @@ Based on our [GitHub Project](https://github.com/damianpia/ev-electricity-price-
 ## 🛠️ Development
 
 ### Prerequisites
-- Node.js (v20+)
-- PostgreSQL
-- Docker & Docker Compose (optional for local DB)
+- **TeslaMate**: Must be installed and running. Follow the [official TeslaMate installation guide](https://docs.teslamate.org/docs/installation/docker).
+- **Node.js**: (v20+)
+- **PostgreSQL**: (Database for this application)
+- **Docker & Docker Compose**: (Optional for local DB)
 
 ### Setup
 1. Clone the repository.
 2. Install dependencies: `npm install`.
-3. Configure environment variables in `.env` (see `.env.example`).
+3. Configure environment variables in `.env` (see `.env.example`). **Ensure you fill in the TeslaMate database connection details.**
 4. Start the development environment: `npm run dev`.
 
 ## 📜 License
