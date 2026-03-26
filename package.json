@@ -2,9 +2,12 @@
   "name": "ev-electricity-price-comparison",
   "private": true,
   "scripts": {
+    "postinstall": "npm install --prefix apps/backend && npm install --prefix apps/frontend",
     "dev:backend": "npm --prefix apps/backend run start:dev",
     "dev:frontend": "npm --prefix apps/frontend run start",
     "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\"",
+    "db:up": "docker-compose up -d",
+    "db:down": "docker-compose down",
     "test:frontend": "npm --prefix apps/frontend test -- --watch=false",
     "test:backend": "npm --prefix apps/backend test"
   },

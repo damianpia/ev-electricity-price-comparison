@@ -41,21 +41,21 @@ Based on our [GitHub Project](https://github.com/damianpia/ev-electricity-price-
 - [ ] **EV-21**: **Research & Simulation**: Optimized charging strategy (Cheapest hour simulation).
 - [ ] **EV-17**: OpenAPI (Swagger) documentation for the backend API.
 - [ ] **EV-3**: Automated CI/CD pipelines and deployment on local **k3s** (miniPC homelab).
-- [ ] **EV-23**: Research: Support for generic JSON charging data imports.
+- [ ] **EV-23**: Research: Support for generic JSON charging data imports (e.g. from MyTeslaMate.com cloud exports).
 
 ## 🛠️ Development
 
 ### Prerequisites
 - **TeslaMate**: Must be installed and running. Follow the [official TeslaMate installation guide](https://docs.teslamate.org/docs/installation/docker).
 - **Node.js**: (v20+)
-- **PostgreSQL**: (Database for this application)
-- **Docker & Docker Compose**: (Optional for local DB)
+- **Docker & Docker Compose**: Required for running the local database.
 
 ### Setup
 1. Clone the repository.
 2. Install dependencies: `npm install`.
-3. Configure environment variables in `.env` (see `.env.example`). **Ensure you fill in the TeslaMate database connection details.**
-4. Start the development environment: `npm run dev`.
+3. Start the local database: `npm run db:up`.
+4. Configure environment variables in `.env` (see `.env.example`). **Ensure you fill in the TeslaMate database connection details.**
+5. Start the development environment: `npm run dev`.
 
 ## 📜 License
 This project is for personal use in a homelab environment.
