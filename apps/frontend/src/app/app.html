@@ -1,30 +1,34 @@
-<mat-toolbar color="primary" class="app-toolbar">
-  <button mat-icon-button (click)="toggleSidenav()" aria-label="Toggle sidenav">
+<mat-toolbar color="primary" class="app-toolbar" data-testid="app-toolbar">
+  <button mat-icon-button (click)="toggleSidenav()" aria-label="Toggle sidenav" data-testid="sidebar-toggle-button">
     <mat-icon>menu</mat-icon>
   </button>
   <mat-icon class="logo-icon">ev_station</mat-icon>
-  <span>{{ title() }}</span>
+  <span data-testid="app-title">{{ title() }}</span>
   <span class="spacer"></span>
 </mat-toolbar>
 
 @if (isLoading()) {
-  <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+  <mat-progress-bar mode="indeterminate" data-testid="app-loading-bar"></mat-progress-bar>
 }
 
-<mat-sidenav-container class="sidenav-container">
-  <mat-sidenav #sidenav mode="side" [opened]="isSidenavOpen()" class="sidenav">
+<mat-sidenav-container class="sidenav-container" data-testid="app-sidenav-container">
+  <mat-sidenav #sidenav mode="side" 
+    [@sidebarToggle]="isSidenavOpen() ? 'open' : 'closed'"
+    [opened]="true" 
+    class="sidenav" 
+    data-testid="app-sidenav">
     <app-sidebar></app-sidebar>
   </mat-sidenav>
 
-  <mat-sidenav-content class="sidenav-content">
+  <mat-sidenav-content class="sidenav-content" data-testid="app-main-content">
     <main class="container">
-      <section class="hero-section">
+      <section class="hero-section" data-testid="hero-section">
         <h1>Charging Cost Summary</h1>
         <p>Compare electricity costs for your EV across different time periods.</p>
       </section>
 
       @if (error()) {
-        <div class="error-container">
+        <div class="error-container" data-testid="error-message">
           <mat-icon>error</mat-icon>
           <span>{{ error() }}</span>
         </div>

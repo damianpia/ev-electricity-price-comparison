@@ -1,13 +1,13 @@
-<mat-nav-list class="sidebar-list">
-  <a mat-list-item routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+<mat-nav-list class="sidebar-list" data-testid="sidebar-nav-list">
+  <a mat-list-item routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" data-testid="sidebar-link-dashboard">
     <mat-icon matListItemIcon>dashboard</mat-icon>
     <span matListItemTitle>Dashboard</span>
   </a>
-  <a mat-list-item routerLink="/history" routerLinkActive="active">
+  <a mat-list-item routerLink="/history" routerLinkActive="active" data-testid="sidebar-link-history">
     <mat-icon matListItemIcon>history</mat-icon>
     <span matListItemTitle>History</span>
   </a>
-  <a mat-list-item routerLink="/settings" routerLinkActive="active">
+  <a mat-list-item routerLink="/settings" routerLinkActive="active" data-testid="sidebar-link-settings">
     <mat-icon matListItemIcon>settings</mat-icon>
     <span matListItemTitle>Settings</span>
   </a>

@@ -13,7 +13,7 @@ This application helps users optimize their EV charging strategy by analyzing hi
 - **TeslaMate Integration**: Automatic synchronization of charging sessions directly from your TeslaMate database.
 - **Cost Analysis**: Granular comparison of costs between standard G11 tariffs and dynamic pricing.
 - **Interactive Dashboard**: Visualize energy consumption, average prices, and potential savings over 7, 30, and 90-day periods.
-- **Modern UI**: Built with Angular 19+, Material Design, and a responsive collapsible navigation system.
+- **Modern UI**: Built with Angular 21+, Material Design, and a responsive collapsible navigation system.
 
 ## 🏗️ Tech Stack
 
@@ -24,7 +24,7 @@ This application helps users optimize their EV charging strategy by analyzing hi
 - **Integrations**: PSE API (Electricity prices), TeslaMate (Charging data)
 
 ### Frontend
-- **Framework**: [Angular 19](https://angular.dev/)
+- **Framework**: [Angular 21](https://angular.dev/)
 - **UI Library**: Angular Material
 - **State Management**: Angular Signals
 - **Styling**: Vanilla CSS/SCSS
@@ -34,12 +34,14 @@ This application helps users optimize their EV charging strategy by analyzing hi
 Based on our [GitHub Project](https://github.com/damianpia/ev-electricity-price-comparison/projects/1):
 
 ### 🛠️ In Progress / Planned
+- [x] **EV-22**: Implement collapsible sidebar component in core/layout (with smooth animations).
 - [ ] **EV-18/14**: Full Authentication flow (OAuth2/OIDC/JWT) and user settings.
 - [ ] **EV-19/20**: Detailed charging history browser and daily breakdown.
 - [ ] **EV-12**: Advanced cost calculation engine including transmission fees.
 - [ ] **EV-21**: **Research & Simulation**: Optimized charging strategy (Cheapest hour simulation).
 - [ ] **EV-17**: OpenAPI (Swagger) documentation for the backend API.
 - [ ] **EV-3**: Automated CI/CD pipelines and deployment on local **k3s** (miniPC homelab).
+- [ ] **EV-23**: Research: Support for generic JSON charging data imports.
 
 ## 🛠️ Development
 

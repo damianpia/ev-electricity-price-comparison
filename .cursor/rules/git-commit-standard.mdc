@@ -14,6 +14,7 @@ Ensure all commits are consistent, traceable to tasks, and provide clear context
 - **Body:** Must be separated from the title by a blank line and include the following sections:
   - `why:` Explain the reasoning or business goal behind the change.
   - `what:` Describe the technical changes made.
+- **Documentation Update:** With every commit, check `README.md` to see if the changes can be documented in the roadmap/features section and remove completed items from the TODO list.
 
 ## Example
 ```text
