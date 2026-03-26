@@ -1,21 +1,36 @@
-import { Injectable, inject, signal } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { signalState, patchState } from '@ngrx/signals';
 import { CostPeriod } from '../models/cost-period.model';
 import { MonthlyBreakdown } from '../models/monthly-breakdown.model';
 import { forkJoin, map } from 'rxjs';
+
+interface CostState {
+  costPeriods: CostPeriod[];
+  monthlyBreakdown: MonthlyBreakdown[];
+  isLoading: boolean;
+  error: string | null;
+}
 
 @Injectable({
   providedIn: 'root'
 })
 export class CostService {
   private readonly http = inject(HttpClient);
-  private readonly apiUrl = '/api/pricing'; // Assuming proxy or base URL configuration
+  private readonly apiUrl = '/api/pricing';
 
-  readonly costPeriods = signal<CostPeriod[]>([]);
-  readonly monthlyBreakdown = signal<MonthlyBreakdown[]>([]);
-  readonly isLoading = signal<boolean>(false);
-  readonly error = signal<string | null>(null);
+  private readonly state = signalState<CostState>({
+    costPeriods: [],
+    monthlyBreakdown: [],
+    isLoading: false,
+    error: null,
+  });
+
+  readonly costPeriods = this.state.costPeriods;
+  readonly monthlyBreakdown = this.state.monthlyBreakdown;
+  readonly isLoading = this.state.isLoading;
+  readonly error = this.state.error;
 
   constructor() {
     this.fetchSummaries();
@@ -35,7 +50,7 @@ export class CostService {
       takeUntilDestroyed()
     ).subscribe({
       next: (results) => {
-        this.monthlyBreakdown.set(results);
+        patchState(this.state, { monthlyBreakdown: results });
       },
       error: (err) => {
         console.error('Fetch monthly breakdown error:', err);
@@ -44,8 +59,7 @@ export class CostService {
   }
 
   fetchSummaries() {
-    this.isLoading.set(true);
-    this.error.set(null);
+    patchState(this.state, { isLoading: true, error: null });
 
     const periods: string[] = ['365d', '90d', '30d', '7d'];
 
@@ -72,12 +86,10 @@ export class CostService {
       takeUntilDestroyed()
     ).subscribe({
       next: (results) => {
-        this.costPeriods.set(results);
-        this.isLoading.set(false);
+        patchState(this.state, { costPeriods: results, isLoading: false });
       },
       error: (err) => {
-        this.error.set('Error fetching data from server.');
-        this.isLoading.set(false);
+        patchState(this.state, { error: 'Error fetching data from server.', isLoading: false });
         console.error('Fetch summaries error:', err);
       }
     });

@@ -1,8 +1,9 @@
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, computed, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CostService } from '../../services/cost.service';
 import { BaseChartDirective } from 'ng2-charts';
 import { ChartConfiguration, ChartData, ChartType } from 'chart.js';
+import { signalState, patchState } from '@ngrx/signals';
 
 import { MonthlyDetailsComponent } from '../monthly-details/monthly-details.component';
 
@@ -17,20 +18,24 @@ export class MonthlyBreakdownComponent {
   private readonly costService = inject(CostService);
   readonly breakdown = this.costService.monthlyBreakdown;
 
-  readonly expandedMonths = signal<Set<string>>(new Set());
+  private readonly state = signalState({
+    expandedMonths: new Set<string>()
+  });
+
+  readonly expandedMonths = this.state.expandedMonths;
 
   toggleMonth(month: string) {
-    const current = new Set(this.expandedMonths());
+    const current = new Set(this.state.expandedMonths());
     if (current.has(month)) {
       current.delete(month);
     } else {
       current.add(month);
     }
-    this.expandedMonths.set(current);
+    patchState(this.state, { expandedMonths: current });
   }
 
   isExpanded(month: string): boolean {
-    return this.expandedMonths().has(month);
+    return this.state.expandedMonths().has(month);
   }
 
   readonly chartData = computed<ChartData<'bar'>>(() => {
