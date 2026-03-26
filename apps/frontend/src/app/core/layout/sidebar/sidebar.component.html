@@ -1,0 +1,14 @@
+<mat-nav-list class="sidebar-list">
+  <a mat-list-item routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+    <mat-icon matListItemIcon>dashboard</mat-icon>
+    <span matListItemTitle>Dashboard</span>
+  </a>
+  <a mat-list-item routerLink="/history" routerLinkActive="active">
+    <mat-icon matListItemIcon>history</mat-icon>
+    <span matListItemTitle>History</span>
+  </a>
+  <a mat-list-item routerLink="/settings" routerLinkActive="active">
+    <mat-icon matListItemIcon>settings</mat-icon>
+    <span matListItemTitle>Settings</span>
+  </a>
+</mat-nav-list>

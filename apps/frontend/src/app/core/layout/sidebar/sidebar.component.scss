@@ -1,0 +1,24 @@
+:host {
+  display: block;
+}
+
+.sidebar-list {
+  padding-top: 1rem;
+
+  a {
+    transition: background-color 0.2s ease;
+
+    &.active {
+      background-color: #f0f4ff;
+      color: #3f51b5;
+
+      mat-icon {
+        color: #3f51b5;
+      }
+    }
+  }
+
+  mat-icon {
+    margin-right: 0.5rem;
+  }
+}

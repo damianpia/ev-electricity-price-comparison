@@ -1,9 +1,35 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.app-toolbar {
+  z-index: 2;
+  position: relative;
+}
+
 .spacer {
   flex: 1 1 auto;
 }
 
 .logo-icon {
-  margin-right: 12px;
+  margin: 0 12px;
+}
+
+.sidenav-container {
+  flex: 1;
+}
+
+.sidenav {
+  width: 250px;
+  background-color: #fafafa;
+  border-right: 1px solid #e0e0e0;
+}
+
+.sidenav-content {
+  display: flex;
+  flex-direction: column;
 }
 
 .hero-section {
@@ -29,6 +55,8 @@
   max-width: 1200px;
   margin: 0 auto;
   padding: 2rem;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .error-container {
@@ -49,4 +77,10 @@
     width: 24px;
     height: 24px;
   }
+}
+
+mat-progress-bar {
+  position: absolute;
+  top: 64px;
+  z-index: 3;
 }

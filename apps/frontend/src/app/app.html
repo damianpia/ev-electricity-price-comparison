@@ -1,4 +1,7 @@
-<mat-toolbar color="primary">
+<mat-toolbar color="primary" class="app-toolbar">
+  <button mat-icon-button (click)="toggleSidenav()" aria-label="Toggle sidenav">
+    <mat-icon>menu</mat-icon>
+  </button>
   <mat-icon class="logo-icon">ev_station</mat-icon>
   <span>{{ title() }}</span>
   <span class="spacer"></span>
@@ -8,20 +11,28 @@
   <mat-progress-bar mode="indeterminate"></mat-progress-bar>
 }
 
-<main class="container">
-  <section class="hero-section">
-    <h1>Charging Cost Summary</h1>
-    <p>Compare electricity costs for your EV across different time periods.</p>
-  </section>
+<mat-sidenav-container class="sidenav-container">
+  <mat-sidenav #sidenav mode="side" [opened]="isSidenavOpen()" class="sidenav">
+    <app-sidebar></app-sidebar>
+  </mat-sidenav>
 
-  @if (error()) {
-    <div class="error-container">
-      <mat-icon>error</mat-icon>
-      <span>{{ error() }}</span>
-    </div>
-  } @else {
-    <app-cost-grid></app-cost-grid>
-  }
+  <mat-sidenav-content class="sidenav-content">
+    <main class="container">
+      <section class="hero-section">
+        <h1>Charging Cost Summary</h1>
+        <p>Compare electricity costs for your EV across different time periods.</p>
+      </section>
 
-  <router-outlet></router-outlet>
-</main>
+      @if (error()) {
+        <div class="error-container">
+          <mat-icon>error</mat-icon>
+          <span>{{ error() }}</span>
+        </div>
+      } @else {
+        <app-cost-grid></app-cost-grid>
+      }
+
+      <router-outlet></router-outlet>
+    </main>
+  </mat-sidenav-content>
+</mat-sidenav-container>
