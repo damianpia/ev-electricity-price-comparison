@@ -1,0 +1,40 @@
+<mat-card class="cost-card" [attr.data-testid]="'cost-card-' + period().periodType">
+  <mat-card-header>
+    <mat-card-title>{{ period().label }}</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <div class="cost-comparison">
+      <div class="cost-item dynamic">
+        <span class="cost-label">Dynamic (RDN)</span>
+        <div class="cost-value">
+          <span class="amount">{{ period().totalCostDynamic | number:'1.2-2' }}</span>
+          <span class="currency">PLN</span>
+        </div>
+      </div>
+      <div class="cost-item fixed">
+        <span class="cost-label">Fixed (G11)</span>
+        <div class="cost-value small">
+          <span class="amount">{{ period().totalCostFixed | number:'1.2-2' }}</span>
+          <span class="currency">PLN</span>
+        </div>
+      </div>
+    </div>
+    
+    <div class="stats">
+      <div class="stat-item">
+        <span class="stat-label">Energy:</span>
+        <span class="stat-value">{{ period().energyConsumedKwh | number:'1.1-1' }} kWh</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-label">Avg Price:</span>
+        <span class="stat-value">{{ period().averagePricePerKwh | number:'1.2-2' }} zł/kWh</span>
+      </div>
+    </div>
+
+    <div class="savings" [class.positive]="period().totalSavings > 0" [class.negative]="period().totalSavings < 0">
+      <mat-icon>{{ period().totalSavings > 0 ? 'savings' : 'warning' }}</mat-icon>
+      <span class="savings-label">Savings: </span>
+      <span class="savings-amount">{{ period().totalSavings | number:'1.2-2' }} PLN</span>
+    </div>
+  </mat-card-content>
+</mat-card>
