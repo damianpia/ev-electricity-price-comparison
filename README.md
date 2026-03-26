@@ -36,12 +36,7 @@ This application helps users optimize their EV charging strategy by analyzing hi
 Based on our [GitHub Project](https://github.com/damianpia/ev-electricity-price-comparison/projects/1):
 
 ### 🛠️ In Progress / Planned
-- [x] **EV-22**: Implement collapsible sidebar component in core/layout (with smooth animations).
-- [x] **EV-20**: Detailed charging history browser and monthly breakdown.
 - [ ] **EV-18/14**: Full Authentication flow (OAuth2/OIDC/JWT) and user settings.
-- [ ] **EV-19**: Detailed daily breakdown.
-- [ ] **EV-12**: Advanced cost calculation engine including transmission fees.
-- [x] **EV-21**: **Research & Simulation**: Optimized charging strategy (Cheapest hour simulation).
 - [ ] **EV-17**: OpenAPI (Swagger) documentation for the backend API.
 - [ ] **EV-3**: Automated CI/CD pipelines and deployment on local **k3s** (miniPC homelab).
 - [ ] **EV-23**: Research: Support for generic JSON charging data imports (e.g. from MyTeslaMate.com cloud exports).
