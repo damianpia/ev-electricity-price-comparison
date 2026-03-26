@@ -14,7 +14,9 @@ This application helps users optimize their EV charging strategy by analyzing hi
 - **Cost Analysis**: Granular comparison of costs between standard G11 tariffs and dynamic pricing.
 - **Optimal Charging Simulation**: Simulation of potential savings by charging only during the cheapest hours of the day.
 - **Interactive Dashboard**: Visualize energy consumption, average prices, and potential savings over 7, 30, 90, and 365-day periods.
-- **Detailed History**: Monthly breakdown with expandable daily sessions, including ideal cost calculation and suggested charging hours.
+- **Advanced History Stats**: Track all-time average daily consumption, median session size, and total energy consumed.
+- **Visualized Simulations**: Interactive charts comparing G11 costs with simulated "Ideal Costs" for better saving insights.
+- **Automated Data Management**: Smart recalculation popups that trigger when pricing or filtering settings change.
 - **Modern UI**: Built with Angular 21+, Material Design, and a responsive collapsible navigation system.
 
 ## 🛠️ Tech Stack
@@ -36,10 +38,13 @@ This application helps users optimize their EV charging strategy by analyzing hi
 Based on our [GitHub Project](https://github.com/damianpia/ev-electricity-price-comparison/projects/1):
 
 ### 🛠️ In Progress / Planned
-- [ ] **EV-18/14**: Full Authentication flow (OAuth2/OIDC/JWT) and user settings.
+- [ ] **EV-14**: Full Authentication flow (OAuth2/OIDC/JWT) and user settings.
 - [ ] **EV-17**: OpenAPI (Swagger) documentation for the backend API.
 - [ ] **EV-3**: Automated CI/CD pipelines and deployment on local **k3s** (miniPC homelab).
 - [ ] **EV-23**: Research: Support for generic JSON charging data imports (e.g. from MyTeslaMate.com cloud exports).
+
+### ✅ Completed
+- [x] **EV-18**: Automated cost recalculation and advanced history statistics.
 
 ## 🛠️ Development
 

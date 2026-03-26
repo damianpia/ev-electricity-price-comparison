@@ -10,6 +10,7 @@ import { PricingModule } from './features/pricing/pricing.module';
 import { QueryHistoryModule } from './features/query-history/query-history.module';
 import { TeslaMateModule } from './features/teslamate/teslamate.module';
 import { ChargingModule } from './features/charging/charging.module';
+import { SettingsModule } from './features/settings/settings.module';
 
 @Module({
   imports: [
@@ -39,6 +40,7 @@ import { ChargingModule } from './features/charging/charging.module';
     QueryHistoryModule,
     TeslaMateModule,
     ChargingModule,
+    SettingsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

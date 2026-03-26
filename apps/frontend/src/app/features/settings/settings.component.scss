@@ -1,0 +1,76 @@
+.settings-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.settings-form {
+  padding: 1rem 0;
+
+  .section-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #1a237e;
+    margin-bottom: 1.5rem;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 0.5rem;
+  }
+
+  .form-row {
+    display: flex;
+    gap: 1.5rem;
+    
+    &.grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  .danger-zone {
+  border: 1px solid #ffcdd2;
+  
+  mat-card-title {
+    color: #c62828;
+  }
+}
+
+.task-progress-container {
+  background: #f8f9fa;
+  padding: 1rem;
+  border-radius: 4px;
+  border: 1px solid #eee;
+}
+
+.d-flex {
+  display: flex;
+}
+
+.justify-content-between {
+  justify-content: space-between;
+}
+
+.mb-1 {
+  margin-bottom: 0.25rem;
+}
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    padding-top: 1rem;
+    border-top: 1px solid #eee;
+  }
+}
+
+.w-100 {
+  width: 100%;
+}
+
+.pt-3 {
+  padding-top: 1rem;
+}
+
+@media (max-width: 600px) {
+  .settings-form .form-row.grid-2 {
+    grid-template-columns: 1fr;
+  }
+}

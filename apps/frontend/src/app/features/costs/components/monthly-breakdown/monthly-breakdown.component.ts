@@ -51,10 +51,10 @@ export class MonthlyBreakdownComponent {
           borderWidth: 1
         },
         {
-          data: data.map(d => d.totalCostDynamic),
-          label: 'Dynamic Cost (RDN)',
-          backgroundColor: '#1a237e', // Deep indigo/navy
-          borderColor: '#000051',
+          data: data.map(d => d.totalOptimalCost),
+          label: 'Ideal Cost (Simulation)',
+          backgroundColor: '#4caf50', // Success green
+          borderColor: '#388e3c',
           borderWidth: 1
         }
       ]

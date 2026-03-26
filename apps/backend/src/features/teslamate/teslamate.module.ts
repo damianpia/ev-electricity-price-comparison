@@ -6,6 +6,7 @@ import { TeslaMateService } from './teslamate.service';
 import { TeslaMateSyncService } from './teslamate-sync.service';
 import { ChargingModule } from '../charging/charging.module';
 import { PricingModule } from '../pricing/pricing.module';
+import { SettingsModule } from '../settings/settings.module';
 
 @Module({
   imports: [
@@ -33,6 +34,7 @@ import { PricingModule } from '../pricing/pricing.module';
     TypeOrmModule.forFeature([TeslaMateChargingProcess, TeslaMateGeofence], 'teslamate'),
     ChargingModule,
     PricingModule,
+    SettingsModule,
     ConfigModule,
   ],
   providers: [TeslaMateService, TeslaMateSyncService],

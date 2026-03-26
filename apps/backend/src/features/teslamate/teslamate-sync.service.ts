@@ -7,6 +7,7 @@ import { ChargingSession } from '../charging/entities/charging-session.entity';
 import { TeslaMateService } from './teslamate.service';
 import { ExternalPriceService } from '../pricing/external-price.service';
 import { CostCalculationService, PricingConfig } from '../pricing/cost-calculation.service';
+import { SettingsService } from '../settings/settings.service';
 
 @Injectable()
 export class TeslaMateSyncService implements OnModuleInit {
@@ -17,6 +18,7 @@ export class TeslaMateSyncService implements OnModuleInit {
     private readonly externalPriceService: ExternalPriceService,
     private readonly costCalculationService: CostCalculationService,
     private readonly configService: ConfigService,
+    private readonly settingsService: SettingsService,
     @InjectRepository(ChargingSession)
     private readonly chargingSessionRepo: Repository<ChargingSession>,
   ) {}
@@ -30,14 +32,14 @@ export class TeslaMateSyncService implements OnModuleInit {
   async syncHomeChargingSessions(): Promise<number> {
     this.logger.log('Starting TeslaMate home charging sync...');
     
-    // 1. Load configuration
+    // 1. Load configuration from SettingsService (with fallbacks)
     const pricingConfig: PricingConfig = {
-      fixedEnergyPrice: parseFloat(this.configService.get<string>('DEFAULT_FIXED_ENERGY_PRICE', '0.50')),
-      variableTransmissionFee: parseFloat(this.configService.get<string>('DEFAULT_TRANSMISSION_FEE', '0.43')),
-      providerMargin: parseFloat(this.configService.get<string>('DEFAULT_PROVIDER_MARGIN', '0.05')),
+      fixedEnergyPrice: await this.settingsService.getNumber('DEFAULT_FIXED_ENERGY_PRICE', 0.50),
+      variableTransmissionFee: await this.settingsService.getNumber('DEFAULT_TRANSMISSION_FEE', 0.43),
+      providerMargin: await this.settingsService.getNumber('DEFAULT_PROVIDER_MARGIN', 0.05),
     };
 
-    const minKwh = parseFloat(this.configService.get<string>('MIN_CHARGING_SESSION_KWH', '5.0'));
+    const minKwh = await this.settingsService.getNumber('MIN_CHARGING_SESSION_KWH', 5.0);
     const lookbackDays = parseInt(this.configService.get<string>('TESLAMATE_SYNC_DAYS_BACK', '365'), 10);
 
     // 2. Determine the "since" date

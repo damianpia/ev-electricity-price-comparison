@@ -3,19 +3,17 @@ import { ConfigService } from '@nestjs/config';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, MoreThan } from 'typeorm';
 import { TeslaMateChargingProcess } from './entities/teslamate.entities';
+import { SettingsService } from '../settings/settings.service';
 
 @Injectable()
 export class TeslaMateService {
   private readonly logger = new Logger(TeslaMateService.name);
-  private readonly homeGeofenceName: string;
 
   constructor(
     @InjectRepository(TeslaMateChargingProcess, 'teslamate')
     private readonly chargingProcessRepo: Repository<TeslaMateChargingProcess>,
-    private readonly configService: ConfigService,
-  ) {
-    this.homeGeofenceName = this.configService.get<string>('TESLAMATE_HOME_GEOFENCE_NAME', 'Home');
-  }
+    private readonly settingsService: SettingsService,
+  ) {}
 
   async getRecentChargingSessions(since?: Date): Promise<TeslaMateChargingProcess[]> {
     this.logger.log(`Fetching recent charging sessions${since ? ` since ${since.toISOString()}` : ''}`);
@@ -29,10 +27,11 @@ export class TeslaMateService {
 
   async getHomeChargingSessions(since?: Date): Promise<TeslaMateChargingProcess[]> {
     const sessions = await this.getRecentChargingSessions(since);
+    const homeGeofenceName = await this.settingsService.get('TESLAMATE_HOME_GEOFENCE_NAME', 'Home');
     
     // Filter for sessions where geofence matches our config (case insensitive)
     return sessions.filter((s) => 
-      s.geofence?.name?.toLowerCase() === this.homeGeofenceName.toLowerCase()
+      s.geofence?.name?.toLowerCase() === homeGeofenceName.toLowerCase()
     );
   }
 

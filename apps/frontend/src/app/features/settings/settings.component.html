@@ -1,0 +1,100 @@
+<div class="settings-container" data-testid="settings-page">
+  <section class="hero-section">
+    <h1>Application Settings</h1>
+    <p>Configure how charging sessions are synced and costs are calculated.</p>
+  </section>
+
+  <div class="settings-content mt-4">
+    <mat-card>
+      <mat-progress-bar mode="indeterminate" *ngIf="isLoading() || isSaving()"></mat-progress-bar>
+      <mat-card-header>
+        <mat-card-title>Configuration</mat-card-title>
+      </mat-card-header>
+
+      <mat-card-content class="pt-3">
+        <form [formGroup]="settingsForm" (ngSubmit)="onSave()" class="settings-form">
+          <div class="form-section">
+            <h3 class="section-title">TeslaMate Integration</h3>
+            <div class="form-row">
+              <mat-form-field appearance="outline" class="w-100">
+                <mat-label>Home Geofence Name</mat-label>
+                <input matInput formControlName="TESLAMATE_HOME_GEOFENCE_NAME" placeholder="e.g. Home">
+                <mat-hint>The name of the location in TeslaMate where you charge at home.</mat-hint>
+                <mat-error *ngIf="settingsForm.get('TESLAMATE_HOME_GEOFENCE_NAME')?.hasError('required')">
+                  Geofence name is required.
+                </mat-error>
+              </mat-form-field>
+            </div>
+
+            <div class="form-row mt-3">
+              <mat-form-field appearance="outline" class="w-100">
+                <mat-label>Minimum Charging Session (kWh)</mat-label>
+                <input matInput type="number" formControlName="MIN_CHARGING_SESSION_KWH">
+                <mat-hint>Ignore charging sessions smaller than this value.</mat-hint>
+                <mat-error *ngIf="settingsForm.get('MIN_CHARGING_SESSION_KWH')?.hasError('min')">
+                  Value must be positive.
+                </mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+
+          <div class="form-section mt-4">
+            <h3 class="section-title">Cost Calculation (G11 / Standard)</h3>
+            <div class="form-row grid-2">
+              <mat-form-field appearance="outline">
+                <mat-label>Fixed Energy Price (PLN/kWh)</mat-label>
+                <input matInput type="number" step="0.001" formControlName="DEFAULT_FIXED_ENERGY_PRICE">
+                <mat-error *ngIf="settingsForm.get('DEFAULT_FIXED_ENERGY_PRICE')?.hasError('min')">
+                  Price cannot be negative.
+                </mat-error>
+              </mat-form-field>
+
+              <mat-form-field appearance="outline">
+                <mat-label>Variable Transmission Fee (PLN/kWh)</mat-label>
+                <input matInput type="number" step="0.001" formControlName="DEFAULT_TRANSMISSION_FEE">
+                <mat-error *ngIf="settingsForm.get('DEFAULT_TRANSMISSION_FEE')?.hasError('min')">
+                  Fee cannot be negative.
+                </mat-error>
+              </mat-form-field>
+            </div>
+
+            <div class="form-row mt-3">
+              <mat-form-field appearance="outline" class="w-100">
+                <mat-label>Dynamic Provider Margin (PLN/kWh)</mat-label>
+                <input matInput type="number" step="0.001" formControlName="DEFAULT_PROVIDER_MARGIN">
+                <mat-hint>Margin added to market prices (RDN).</mat-hint>
+                <mat-error *ngIf="settingsForm.get('DEFAULT_PROVIDER_MARGIN')?.hasError('min')">
+                  Margin cannot be negative.
+                </mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+
+          <div class="form-actions mt-4">
+            <button mat-raised-button color="primary" type="submit" [disabled]="settingsForm.invalid || isSaving() || taskStatus().active">
+              <mat-icon>save</mat-icon>
+              Save Settings
+            </button>
+          </div>
+        </form>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="mt-4 background-task-card" *ngIf="!isLoading() && taskStatus().active">
+      <mat-card-header>
+        <mat-card-title>Recalculation in Progress</mat-card-title>
+      </mat-card-header>
+      <mat-card-content class="pt-3">
+        <p>Updating all historical charging sessions with your current pricing settings. This process runs in the background.</p>
+        
+        <div class="task-progress-container mt-3">
+          <div class="d-flex justify-content-between mb-1">
+            <span>{{ taskStatus().message }}</span>
+            <span>{{ taskStatus().progress }} / {{ taskStatus().total }}</span>
+          </div>
+          <mat-progress-bar mode="determinate" [value]="(taskStatus().progress / (taskStatus().total || 1)) * 100"></mat-progress-bar>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

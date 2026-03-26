@@ -4,6 +4,9 @@ import { join } from 'path';
 
 // Load environment variables with override: true
 config({ path: join(process.cwd(), '.env'), override: true });
+config({ path: join(process.cwd(), 'apps/backend/.env'), override: true });
+config({ path: join(process.cwd(), '../../.env'), override: true });
+config({ path: join(process.cwd(), '../.env'), override: true });
 
 export default new DataSource({
   type: 'postgres',
