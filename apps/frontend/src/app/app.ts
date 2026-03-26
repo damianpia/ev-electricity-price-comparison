@@ -7,7 +7,6 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatButtonModule } from '@angular/material/button';
-import { CostGridComponent } from './features/costs/components/cost-grid/cost-grid.component';
 import { CostService } from './features/costs/services/cost.service';
 import { SidebarComponent } from './core/layout/sidebar/sidebar.component';
 
@@ -22,7 +21,6 @@ import { SidebarComponent } from './core/layout/sidebar/sidebar.component';
     MatProgressBarModule,
     MatSidenavModule,
     MatButtonModule,
-    CostGridComponent,
     SidebarComponent
   ],
   templateUrl: './app.html',

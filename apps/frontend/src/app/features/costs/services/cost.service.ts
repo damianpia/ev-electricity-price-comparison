@@ -1,6 +1,8 @@
 import { Injectable, inject, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { CostPeriod } from '../models/cost-period.model';
+import { MonthlyBreakdown } from '../models/monthly-breakdown.model';
 import { forkJoin, map } from 'rxjs';
 
 @Injectable({
@@ -11,11 +13,34 @@ export class CostService {
   private readonly apiUrl = '/api/pricing'; // Assuming proxy or base URL configuration
 
   readonly costPeriods = signal<CostPeriod[]>([]);
+  readonly monthlyBreakdown = signal<MonthlyBreakdown[]>([]);
   readonly isLoading = signal<boolean>(false);
   readonly error = signal<string | null>(null);
 
   constructor() {
     this.fetchSummaries();
+    this.fetchMonthlyBreakdown();
+  }
+
+  fetchMonthlyBreakdown() {
+    this.http.get<MonthlyBreakdown[]>(`${this.apiUrl}/monthly-breakdown`).pipe(
+      map(results => results.map(item => {
+        const savings = item.totalCostFixed - item.totalCostDynamic;
+        return {
+          ...item,
+          totalSavings: savings,
+          savingsPercentage: item.totalCostFixed > 0 ? (savings / item.totalCostFixed) * 100 : 0
+        };
+      })),
+      takeUntilDestroyed()
+    ).subscribe({
+      next: (results) => {
+        this.monthlyBreakdown.set(results);
+      },
+      error: (err) => {
+        console.error('Fetch monthly breakdown error:', err);
+      }
+    });
   }
 
   fetchSummaries() {
@@ -43,7 +68,9 @@ export class CostService {
       )
     );
 
-    forkJoin(requests).subscribe({
+    forkJoin(requests).pipe(
+      takeUntilDestroyed()
+    ).subscribe({
       next: (results) => {
         this.costPeriods.set(results);
         this.isLoading.set(false);

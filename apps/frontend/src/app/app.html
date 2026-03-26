@@ -22,21 +22,14 @@
 
   <mat-sidenav-content class="sidenav-content" data-testid="app-main-content">
     <main class="container">
-      <section class="hero-section" data-testid="hero-section">
-        <h1>Charging Cost Summary</h1>
-        <p>Compare electricity costs for your EV across different time periods.</p>
-      </section>
-
       @if (error()) {
         <div class="error-container" data-testid="error-message">
           <mat-icon>error</mat-icon>
           <span>{{ error() }}</span>
         </div>
       } @else {
-        <app-cost-grid></app-cost-grid>
+        <router-outlet></router-outlet>
       }
-
-      <router-outlet></router-outlet>
     </main>
   </mat-sidenav-content>
 </mat-sidenav-container>

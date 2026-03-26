@@ -35,8 +35,9 @@ Based on our [GitHub Project](https://github.com/damianpia/ev-electricity-price-
 
 ### 🛠️ In Progress / Planned
 - [x] **EV-22**: Implement collapsible sidebar component in core/layout (with smooth animations).
+- [x] **EV-20**: Detailed charging history browser and monthly breakdown.
 - [ ] **EV-18/14**: Full Authentication flow (OAuth2/OIDC/JWT) and user settings.
-- [ ] **EV-19/20**: Detailed charging history browser and daily breakdown.
+- [ ] **EV-19**: Detailed daily breakdown.
 - [ ] **EV-12**: Advanced cost calculation engine including transmission fees.
 - [ ] **EV-21**: **Research & Simulation**: Optimized charging strategy (Cheapest hour simulation).
 - [ ] **EV-17**: OpenAPI (Swagger) documentation for the backend API.

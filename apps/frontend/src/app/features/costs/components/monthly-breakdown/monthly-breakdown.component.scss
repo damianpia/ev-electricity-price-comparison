@@ -1,0 +1,72 @@
+.monthly-breakdown-container {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-top: 2rem;
+  overflow: hidden;
+
+  .chart-wrapper {
+    height: 400px;
+    width: 100%;
+    padding: 1.5rem;
+    box-sizing: border-box;
+  }
+
+  .table-wrapper {
+    overflow-x: auto;
+    
+    .monthly-table {
+      width: 100%;
+      border-collapse: collapse;
+      
+      th, td {
+        text-align: left;
+        padding: 1rem 1.5rem;
+        border-bottom: 1px solid #eee;
+      }
+      
+      th {
+        background-color: #f8f9fa;
+        font-weight: 600;
+        text-transform: uppercase;
+        font-size: 0.85rem;
+        letter-spacing: 0.05em;
+      }
+      
+      tr:hover {
+        background-color: #f1f3f5;
+      }
+
+      .totals-row {
+        background-color: #f1f3f5;
+        font-weight: 700;
+        
+        td {
+          border-top: 2px solid #dee2e6;
+          border-bottom: none;
+        }
+      }
+      
+      .positive {
+        color: #2e7d32;
+        font-weight: 600;
+      }
+      
+      .negative {
+        color: #d32f2f;
+        font-weight: 600;
+      }
+
+      .percentage {
+        font-size: 0.85rem;
+        font-weight: 400;
+        margin-left: 0.5rem;
+        opacity: 0.8;
+      }
+    }
+  }
+
+  .mt-4 {
+    margin-top: 0;
+  }
+}

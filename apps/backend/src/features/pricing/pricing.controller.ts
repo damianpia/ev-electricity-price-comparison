@@ -23,6 +23,11 @@ export class PricingController {
     return this.pricingService.getCostSummary(period);
   }
 
+  @Get('monthly-breakdown')
+  async getMonthlyBreakdown() {
+    return this.pricingService.getMonthlyBreakdown();
+  }
+
   @Get('providers')
   findAllProviders() {
     return this.pricingService.findAllProviders();

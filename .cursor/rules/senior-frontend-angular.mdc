@@ -16,6 +16,11 @@ alwaysApply: true
   - NEVER use inline `template: \`...\`` or `styles: [...]` in the `@Component` decorator.
 - Follow naming conventions: kebab-case for files (`user-profile.component.ts`), PascalCase for classes/types, camelCase for variables/functions.
 - TDD: write unit tests first (`*.spec.ts` near tested files).
+- **Subscription Management**: 
+  - ALWAYS prevent memory leaks by unsubscribing.
+  - Prefer using **Signals** to avoid manual subscriptions.
+  - If a subscription is necessary, ALWAYS use `takeUntilDestroyed()` from `@angular/core/rxjs-interop`.
+  - Avoid manual `Subject` + `takeUntil` pattern unless `takeUntilDestroyed` is not applicable.
 
 ## HTML
 - Use the **new Angular Control Flow syntax** (`@if`, `@for`, `@switch`) exclusively.

@@ -1,0 +1,52 @@
+<div class="monthly-breakdown-container" data-testid="monthly-breakdown">
+  <div class="chart-wrapper">
+    <canvas baseChart
+            [data]="chartData()"
+            [options]="chartOptions"
+            [type]="'bar'">
+    </canvas>
+  </div>
+
+  <div class="table-wrapper mt-4">
+    <table class="monthly-table" data-testid="monthly-breakdown-table">
+      <thead>
+        <tr>
+          <th>Month</th>
+          <th>Energy</th>
+          <th>G11 Cost</th>
+          <th>Dynamic Cost</th>
+          <th>Savings</th>
+          <th>Min Price</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (item of breakdown(); track item.month) {
+          <tr>
+            <td>{{ item.month }}</td>
+            <td>{{ item.totalKwh | number:'1.1-1' }} kWh</td>
+            <td>{{ item.totalCostFixed | number:'1.2-2' }} PLN</td>
+            <td>{{ item.totalCostDynamic | number:'1.2-2' }} PLN</td>
+            <td [class.positive]="item.totalSavings > 0" [class.negative]="item.totalSavings < 0">
+              {{ item.totalSavings | number:'1.2-2' }} PLN
+              <span class="percentage">({{ item.savingsPercentage | number:'1.1-1' }}%)</span>
+            </td>
+            <td>{{ item.minPrice | number:'1.2-2' }} zł/kWh</td>
+          </tr>
+        }
+      </tbody>
+      <tfoot>
+        <tr class="totals-row">
+          <td>Total</td>
+          <td>{{ totals().totalKwh | number:'1.1-1' }} kWh</td>
+          <td>{{ totals().totalCostFixed | number:'1.2-2' }} PLN</td>
+          <td>{{ totals().totalCostDynamic | number:'1.2-2' }} PLN</td>
+          <td [class.positive]="totals().totalSavings > 0" [class.negative]="totals().totalSavings < 0">
+            {{ totals().totalSavings | number:'1.2-2' }} PLN
+            <span class="percentage">({{ totals().totalSavingsPercentage | number:'1.1-1' }}%)</span>
+          </td>
+          <td>-</td>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+</div>
