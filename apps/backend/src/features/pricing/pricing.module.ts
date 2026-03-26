@@ -8,6 +8,7 @@ import { ChargingSession } from '../charging/entities/charging-session.entity';
 import { PricingService } from './pricing.service';
 import { ExternalPriceService } from './external-price.service';
 import { CostCalculationService } from './cost-calculation.service';
+import { OptimalChargingService } from './optimal-charging.service';
 import { PricingController } from './pricing.controller';
 
 @Module({
@@ -15,8 +16,8 @@ import { PricingController } from './pricing.controller';
     TypeOrmModule.forFeature([Tariff, Provider, HourlyPrice, ChargingSession]),
     ConfigModule,
   ],
-  providers: [PricingService, ExternalPriceService, CostCalculationService],
+  providers: [PricingService, ExternalPriceService, CostCalculationService, OptimalChargingService],
   controllers: [PricingController],
-  exports: [TypeOrmModule, PricingService, ExternalPriceService, CostCalculationService],
+  exports: [TypeOrmModule, PricingService, ExternalPriceService, CostCalculationService, OptimalChargingService],
 })
 export class PricingModule {}

@@ -12,10 +12,12 @@ This application helps users optimize their EV charging strategy by analyzing hi
 - **Real-time Price Integration**: Automated fetching of hourly electricity prices from the official PSE API.
 - **TeslaMate Integration**: Automatic synchronization of charging sessions directly from your TeslaMate database.
 - **Cost Analysis**: Granular comparison of costs between standard G11 tariffs and dynamic pricing.
+- **Optimal Charging Simulation**: Simulation of potential savings by charging only during the cheapest hours of the day.
 - **Interactive Dashboard**: Visualize energy consumption, average prices, and potential savings over 7, 30, 90, and 365-day periods.
+- **Detailed History**: Monthly breakdown with expandable daily sessions, including ideal cost calculation and suggested charging hours.
 - **Modern UI**: Built with Angular 21+, Material Design, and a responsive collapsible navigation system.
 
-## 🏗️ Tech Stack
+## 🛠️ Tech Stack
 
 ### Backend
 - **Framework**: [NestJS](https://nestjs.com/) (Node.js)
@@ -39,7 +41,7 @@ Based on our [GitHub Project](https://github.com/damianpia/ev-electricity-price-
 - [ ] **EV-18/14**: Full Authentication flow (OAuth2/OIDC/JWT) and user settings.
 - [ ] **EV-19**: Detailed daily breakdown.
 - [ ] **EV-12**: Advanced cost calculation engine including transmission fees.
-- [ ] **EV-21**: **Research & Simulation**: Optimized charging strategy (Cheapest hour simulation).
+- [x] **EV-21**: **Research & Simulation**: Optimized charging strategy (Cheapest hour simulation).
 - [ ] **EV-17**: OpenAPI (Swagger) documentation for the backend API.
 - [ ] **EV-3**: Automated CI/CD pipelines and deployment on local **k3s** (miniPC homelab).
 - [ ] **EV-23**: Research: Support for generic JSON charging data imports (e.g. from MyTeslaMate.com cloud exports).

@@ -1,19 +1,37 @@
-import { Component, computed, inject } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CostService } from '../../services/cost.service';
 import { BaseChartDirective } from 'ng2-charts';
 import { ChartConfiguration, ChartData, ChartType } from 'chart.js';
 
+import { MonthlyDetailsComponent } from '../monthly-details/monthly-details.component';
+
 @Component({
   selector: 'app-monthly-breakdown',
   standalone: true,
-  imports: [CommonModule, BaseChartDirective],
+  imports: [CommonModule, BaseChartDirective, MonthlyDetailsComponent],
   templateUrl: './monthly-breakdown.component.html',
   styleUrl: './monthly-breakdown.component.scss'
 })
 export class MonthlyBreakdownComponent {
   private readonly costService = inject(CostService);
   readonly breakdown = this.costService.monthlyBreakdown;
+
+  readonly expandedMonths = signal<Set<string>>(new Set());
+
+  toggleMonth(month: string) {
+    const current = new Set(this.expandedMonths());
+    if (current.has(month)) {
+      current.delete(month);
+    } else {
+      current.add(month);
+    }
+    this.expandedMonths.set(current);
+  }
+
+  isExpanded(month: string): boolean {
+    return this.expandedMonths().has(month);
+  }
 
   readonly chartData = computed<ChartData<'bar'>>(() => {
     const data = this.breakdown();
@@ -44,12 +62,17 @@ export class MonthlyBreakdownComponent {
       totalKwh: acc.totalKwh + curr.totalKwh,
       totalCostFixed: acc.totalCostFixed + curr.totalCostFixed,
       totalCostDynamic: acc.totalCostDynamic + curr.totalCostDynamic,
+      totalOptimalCost: acc.totalOptimalCost + curr.totalOptimalCost,
       totalSavings: acc.totalSavings + curr.totalSavings,
-    }), { totalKwh: 0, totalCostFixed: 0, totalCostDynamic: 0, totalSavings: 0 });
+    }), { totalKwh: 0, totalCostFixed: 0, totalCostDynamic: 0, totalOptimalCost: 0, totalSavings: 0 });
+
+    const totalOptimalSavings = t.totalCostFixed - t.totalOptimalCost;
 
     return {
       ...t,
-      totalSavingsPercentage: t.totalCostFixed > 0 ? (t.totalSavings / t.totalCostFixed) * 100 : 0
+      totalSavingsPercentage: t.totalCostFixed > 0 ? (t.totalSavings / t.totalCostFixed) * 100 : 0,
+      totalOptimalSavings,
+      totalOptimalSavingsPercentage: t.totalCostFixed > 0 ? (totalOptimalSavings / t.totalCostFixed) * 100 : 0
     };
   });
 

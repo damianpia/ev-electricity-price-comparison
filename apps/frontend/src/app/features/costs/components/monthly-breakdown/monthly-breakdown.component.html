@@ -15,23 +15,40 @@
           <th>Energy</th>
           <th>G11 Cost</th>
           <th>Dynamic Cost</th>
-          <th>Savings</th>
-          <th>Min Price</th>
+          <th>Actual Savings</th>
+          <th class="separator-column">Ideal Cost</th>
+          <th>Ideal Savings</th>
         </tr>
       </thead>
       <tbody>
         @for (item of breakdown(); track item.month) {
-          <tr>
-            <td>{{ item.month }}</td>
+          <tr (click)="toggleMonth(item.month)" class="month-row cursor-pointer" data-testid="month-row">
+            <td>
+              <span class="expand-icon">{{ isExpanded(item.month) ? '▼' : '▶' }}</span>
+              {{ item.month }}
+            </td>
             <td>{{ item.totalKwh | number:'1.1-1' }} kWh</td>
             <td>{{ item.totalCostFixed | number:'1.2-2' }} PLN</td>
             <td>{{ item.totalCostDynamic | number:'1.2-2' }} PLN</td>
             <td [class.positive]="item.totalSavings > 0" [class.negative]="item.totalSavings < 0">
               {{ item.totalSavings | number:'1.2-2' }} PLN
-              <span class="percentage">({{ item.savingsPercentage | number:'1.1-1' }}%)</span>
             </td>
-            <td>{{ item.minPrice | number:'1.2-2' }} zł/kWh</td>
+            <td class="optimal-column-main separator-column">
+              {{ item.totalOptimalCost | number:'1.2-2' }} PLN
+            </td>
+            <td class="optimal-column-main">
+              {{ item.totalCostFixed - item.totalOptimalCost | number:'1.2-2' }} PLN
+              <span class="percentage">(-{{ (item.totalCostFixed - item.totalOptimalCost) / item.totalCostFixed * 100 | number:'1.1-1' }}%)</span>
+            </td>
           </tr>
+          
+          @if (isExpanded(item.month)) {
+            <tr class="details-row">
+              <td colspan="7">
+                <app-monthly-details [monthData]="item"></app-monthly-details>
+              </td>
+            </tr>
+          }
         }
       </tbody>
       <tfoot>
@@ -42,9 +59,14 @@
           <td>{{ totals().totalCostDynamic | number:'1.2-2' }} PLN</td>
           <td [class.positive]="totals().totalSavings > 0" [class.negative]="totals().totalSavings < 0">
             {{ totals().totalSavings | number:'1.2-2' }} PLN
-            <span class="percentage">({{ totals().totalSavingsPercentage | number:'1.1-1' }}%)</span>
           </td>
-          <td>-</td>
+          <td class="optimal-column-main separator-column">
+            {{ totals().totalOptimalCost | number:'1.2-2' }} PLN
+          </td>
+          <td class="optimal-column-main">
+            {{ totals().totalOptimalSavings | number:'1.2-2' }} PLN
+            <span class="percentage">(-{{ totals().totalOptimalSavingsPercentage | number:'1.1-1' }}%)</span>
+          </td>
         </tr>
       </tfoot>
     </table>

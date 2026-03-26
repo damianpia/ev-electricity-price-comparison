@@ -1,0 +1,39 @@
+<div class="details-container p-3">
+  <h6>Daily Sessions ({{ monthData.month }})</h6>
+  <table class="details-table w-100">
+    <thead>
+      <tr>
+        <th>Date & Time</th>
+        <th>Charged</th>
+        <th>G11 Cost</th>
+        <th>Dynamic Cost</th>
+        <th class="separator-column">Ideal Cost</th>
+        <th>Ideal Hours</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (session of monthData.sessions; track session.id) {
+        <tr>
+          <td class="date-cell">
+            <span class="date-main"><strong>{{ session.startTime | date:'dd.MM.yyyy' }}</strong></span>
+            <span class="time-range">
+              {{ session.startTime | date:'HH:mm' }} — {{ session.endTime | date:'HH:mm' }}
+              @if (isNextDay(session.startTime, session.endTime)) {
+                <span class="next-day-badge" title="Overnight session">(+1d)</span>
+              }
+            </span>
+          </td>
+          <td>{{ session.kwhAdded | number:'1.1-1' }} kWh</td>
+          <td>{{ session.costFixed | number:'1.2-2' }} PLN</td>
+          <td>{{ session.costDynamic | number:'1.2-2' }} PLN</td>
+          <td class="optimal-column separator-column">
+            {{ session.optimalCost | number:'1.2-2' }} PLN
+          </td>
+          <td class="optimal-column">
+            {{ session.optimalHours.join(', ') }}
+          </td>
+        </tr>
+      }
+    </tbody>
+  </table>
+</div>

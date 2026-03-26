@@ -6,6 +6,7 @@ import { Provider } from './entities/provider.entity';
 import { HourlyPrice } from './entities/hourly-price.entity';
 import { ChargingSession } from '../charging/entities/charging-session.entity';
 import { CreateProviderDto } from './dto/create-provider.dto';
+import { OptimalChargingService } from './optimal-charging.service';
 
 @Injectable()
 export class PricingService {
@@ -18,6 +19,7 @@ export class PricingService {
     private readonly hourlyPriceRepo: Repository<HourlyPrice>,
     @InjectRepository(ChargingSession)
     private readonly chargingSessionRepo: Repository<ChargingSession>,
+    private readonly optimalChargingService: OptimalChargingService,
   ) {}
 
   async getCostSummary(period: string) {
@@ -77,7 +79,9 @@ export class PricingService {
             totalKwh: 0,
             totalCostFixed: 0,
             totalCostDynamic: 0,
+            totalOptimalCost: 0,
             minPrice: 0,
+            sessions: [],
           });
         }
 
@@ -85,14 +89,32 @@ export class PricingService {
         data.totalKwh += Number(s.kwhAdded);
         data.totalCostFixed += Number(s.costFixed || 0);
         data.totalCostDynamic += Number(s.costDynamic || 0);
+
+        // Calculate optimal charging for this specific session
+        const dateStr = date.toISOString().split('T')[0];
+        const optimal = await this.optimalChargingService.calculate(dateStr, Number(s.kwhAdded), 6);
+        
+        data.totalOptimalCost += optimal.totalCost;
+
+        data.sessions.push({
+          id: s.id,
+          startTime: s.startTime,
+          endTime: s.endTime,
+          kwhAdded: Number(s.kwhAdded),
+          costFixed: Number(s.costFixed),
+          costDynamic: Number(s.costDynamic),
+          optimalCost: optimal.totalCost,
+          optimalKwhPotential: Number(s.kwhAdded),
+          optimalHours: optimal.hours.map(h => h.hour),
+        });
       }
 
-      // Fetch min prices for each month
+      // Fetch min prices for each month and finalize breakdown
       const breakdown = Array.from(monthlyData.values());
       for (const item of breakdown) {
         const [year, month] = item.month.split('-').map(Number);
         const startDate = new Date(year, month - 1, 1);
-        const endDate = new Date(year, month, 0); // Last day of month
+        const endDate = new Date(year, month, 0);
 
         const minPriceRecord = await this.hourlyPriceRepo.createQueryBuilder('hp')
           .where('hp.date >= :start AND hp.date <= :end', { 
@@ -106,6 +128,9 @@ export class PricingService {
         if (minPriceRecord) {
           item.minPrice = Number(minPriceRecord.pricePerKwh);
         }
+
+        item.totalSavings = item.totalCostFixed - item.totalCostDynamic;
+        item.savingsPercentage = item.totalCostFixed > 0 ? (item.totalSavings / item.totalCostFixed) * 100 : 0;
       }
 
       return breakdown;
