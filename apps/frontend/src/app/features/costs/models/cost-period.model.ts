@@ -1,6 +1,7 @@
 export interface CostPeriod {
-  label: string; // e.g., "Last 24h", "Last 7d", "Last 30d"
-  periodType: '7d' | '30d' | '90d';
+  label?: string; // Optional, can be used for custom periods
+  daysCount: number;
+  periodType: string;
   totalCostFixed: number;
   totalCostDynamic: number;
   energyConsumedKwh: number;

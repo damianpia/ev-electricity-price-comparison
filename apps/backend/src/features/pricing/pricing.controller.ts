@@ -19,7 +19,7 @@ export class PricingController {
   }
 
   @Get('summary')
-  async getSummary(@Query('period') period: '7d' | '30d' | '90d' = '30d') {
+  async getSummary(@Query('period') period: string = '30d') {
     return this.pricingService.getCostSummary(period);
   }
 

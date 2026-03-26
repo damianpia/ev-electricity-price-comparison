@@ -17,13 +17,18 @@ export class PricingService {
     private readonly chargingSessionRepo: Repository<ChargingSession>,
   ) {}
 
-  async getCostSummary(period: '7d' | '30d' | '90d') {
+  async getCostSummary(period: string) {
     const now = new Date();
     let startDate = new Date();
 
-    if (period === '7d') startDate.setDate(now.getDate() - 7);
-    else if (period === '30d') startDate.setDate(now.getDate() - 30);
-    else if (period === '90d') startDate.setDate(now.getDate() - 90);
+    const daysMatch = period.match(/^(\d+)d$/);
+    if (daysMatch) {
+      const days = parseInt(daysMatch[1], 10);
+      startDate.setDate(now.getDate() - days);
+    } else {
+      // Default to 30 days if format is invalid
+      startDate.setDate(now.getDate() - 30);
+    }
 
     const sessions = await this.chargingSessionRepo.find({
       where: {

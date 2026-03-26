@@ -22,24 +22,24 @@ export class CostService {
     this.isLoading.set(true);
     this.error.set(null);
 
-    const periods: ('90d' | '30d' | '7d')[] = ['90d', '30d', '7d'];
-    const labels = {
-      '90d': 'Last 90 days',
-      '30d': 'Last 30 days',
-      '7d': 'Last 7 days'
-    };
+    const periods: string[] = ['365d', '90d', '30d', '7d'];
 
     const requests = periods.map(period => 
       this.http.get<any>(`${this.apiUrl}/summary?period=${period}`).pipe(
-        map(data => ({
-          label: labels[period],
-          periodType: period,
-          totalCostFixed: data.totalCostFixed,
-          totalCostDynamic: data.totalCostDynamic,
-          energyConsumedKwh: data.totalKwh,
-          averagePricePerKwh: data.totalKwh > 0 ? data.totalCostDynamic / data.totalKwh : 0,
-          totalSavings: data.totalSavings
-        } as CostPeriod))
+        map(data => {
+          const daysMatch = period.match(/^(\d+)d$/);
+          const daysCount = daysMatch ? parseInt(daysMatch[1], 10) : 30;
+          
+          return {
+            daysCount,
+            periodType: period,
+            totalCostFixed: data.totalCostFixed,
+            totalCostDynamic: data.totalCostDynamic,
+            energyConsumedKwh: data.totalKwh,
+            averagePricePerKwh: data.totalKwh > 0 ? data.totalCostDynamic / data.totalKwh : 0,
+            totalSavings: data.totalSavings
+          } as CostPeriod;
+        })
       )
     );
 

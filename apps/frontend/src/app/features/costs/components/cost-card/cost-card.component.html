@@ -1,6 +1,8 @@
 <mat-card class="cost-card" [attr.data-testid]="'cost-card-' + period().periodType">
   <mat-card-header>
-    <mat-card-title [attr.data-testid]="'cost-card-title-' + period().periodType">{{ period().label }}</mat-card-title>
+    <mat-card-title [attr.data-testid]="'cost-card-title-' + period().periodType">
+      {{ period().label || (period().daysCount | i18nPlural: dayPluralMapping) }}
+    </mat-card-title>
   </mat-card-header>
   <mat-card-content>
     <div class="cost-comparison">

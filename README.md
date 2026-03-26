@@ -12,7 +12,7 @@ This application helps users optimize their EV charging strategy by analyzing hi
 - **Real-time Price Integration**: Automated fetching of hourly electricity prices from the official PSE API.
 - **TeslaMate Integration**: Automatic synchronization of charging sessions directly from your TeslaMate database.
 - **Cost Analysis**: Granular comparison of costs between standard G11 tariffs and dynamic pricing.
-- **Interactive Dashboard**: Visualize energy consumption, average prices, and potential savings over 7, 30, and 90-day periods.
+- **Interactive Dashboard**: Visualize energy consumption, average prices, and potential savings over 7, 30, 90, and 365-day periods.
 - **Modern UI**: Built with Angular 21+, Material Design, and a responsive collapsible navigation system.
 
 ## 🏗️ Tech Stack

@@ -13,4 +13,9 @@ import { CostPeriod } from '../../models/cost-period.model';
 })
 export class CostCardComponent {
   period = input.required<CostPeriod>();
+
+  readonly dayPluralMapping = {
+    '=1': 'Last 1 day',
+    'other': 'Last # days'
+  };
 }
